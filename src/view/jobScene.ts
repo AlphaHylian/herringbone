@@ -774,6 +774,12 @@ export class JobScene implements Scene {
         const t = this.bar.palletTop();
         return [t.at[0] + this.bar.x, t.at[1] + this.bar.y];
       },
+      /** Screen centre of the n-th tray piece. */
+      trayScreen: (n: number) => {
+        const o = this.state.tray[n];
+        const c = o ? this.bar.wellCenter(o.id) : null;
+        return c ? [c[0] + this.bar.x, c[1] + this.bar.y] : null;
+      },
       /** Ideal cut lines for an edge slot, in screen coordinates. */
       idealCutsScreen: (id: number) =>
         idealCuts(this.job.slots[id]!, this.job.brickWidth).map(([a, b]) => [

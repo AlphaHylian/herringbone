@@ -14,7 +14,11 @@
       textured bricks from one procedural atlas, shadows), pallet and offcut tray, drag-and-snap
       with magnetic pull, tap-to-fill, unlimited undo, completion and results card. Playwright
       test drives real pointer input, then finishes the job via the solver hook.
-- [ ] **4. Cutting and offcuts**
+- [x] **4. Cutting and offcuts**: splitter overlay (wooden bench, dashed target outline,
+      live swipe line extended across the brick, blade drop, split, offcut slides to the tray,
+      fit meter with the 0.9 mark, cut again, undo cut, "Lay it", cancel). Clean cuts fly into
+      the slot automatically. Offcuts drag from the tray, snap and flip into fitting gaps.
+      Rating from material use and clean cuts. e2e tests for clean, sloppy and offcut flows.
 - [ ] **5. Feel pass**
 - [ ] **6. Progression**
 - [ ] **7. Polish and verification**

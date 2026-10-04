@@ -7,6 +7,7 @@ import { readSafeArea, type Layout } from './view/layout';
 import { Tweens } from './view/tween';
 import { SaveStore, SceneManager, type Ctx, type Scene, type SceneSpec } from './view/ctx';
 import { JobScene } from './view/jobScene';
+import { attachSplitter } from './view/splitter';
 import { getLevel, LEVEL_ORDER } from './levels';
 import { resultsCard } from './view/results';
 import { THEME } from './view/theme';
@@ -73,6 +74,7 @@ async function boot(): Promise<void> {
         const scene = new JobScene(c, getLevel(id), {
           onExit: () => c.goto({ name: 'job', levelId: id }),
         });
+        attachSplitter(scene);
         scene.finisher = async (sc) => {
           const card = resultsCard(c, {
             title: 'Job done!',
