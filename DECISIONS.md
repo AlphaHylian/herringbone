@@ -64,3 +64,22 @@ Judgment calls made while building Herringbone, with the reasoning.
   should arrive early. Willow Lane unlocks 45° herringbone and Harbour Hill unlocks basketweave.
 - Levels are authored in `scripts/build-levels.mjs` (`pnpm levels`), which samples arcs at
   about 70 mm chords and writes the JSON files in `src/levels/`.
+
+## Feel
+
+- **Shadows** are three nested translucent polygons per piece, not a blur filter. They batch
+  with everything else and cost nothing per frame.
+- **One texture atlas per palette.** Every brick, cut piece and offcut is a Graphics polygon
+  filled from the same atlas texture in `'global'` texture space, through an affine "skin"
+  that maps brick-local millimetres into the piece's current frame. A piece keeps its exact
+  brick texture when it moves from the splitter to the tray to another slot, and everything
+  batches into very few draw calls.
+- **Finishing sequence:** sand sweep 1.9 s, compactor 2.3 s, camera pull-back 1.3 s, then
+  decorations popping in about 0.15 s apart, then the rating card. That's about 7 s in
+  total, and a tap anywhere skips to the end state. The cat strolls in from off-screen after
+  the sequence; it doesn't block the rating.
+- **Decorations** are drawn procedurally from code. A unit test keeps grass-side items
+  (benches, plants, cats, bikes) clear of the paving.
+- **Headless performance numbers are not meaningful.** The sandbox's Chromium renders WebGL
+  with SwiftShader on the CPU, where even an empty stage manages about 40 fps. Performance is
+  judged by draw-call and allocation discipline instead (see milestone 7).

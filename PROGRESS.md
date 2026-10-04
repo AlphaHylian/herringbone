@@ -19,6 +19,11 @@
       fit meter with the 0.9 mark, cut again, undo cut, "Lay it", cancel). Clean cuts fly into
       the slot automatically. Offcuts drag from the tray, snap and flip into fitting gaps.
       Rating from material use and clean cuts. e2e tests for clean, sloppy and offcut flows.
-- [ ] **5. Feel pass**
+- [x] **5. Feel pass**: procedural brick atlas (mottling, grain, pits, flashed edges,
+      chamfers, rounded corners, paler sharp cut edges), grass/sand textures, soft layered
+      shadows, landing bounce with dust puffs, magnetic snap, Web Audio synthesis for every
+      sound (clack, pickup, blade thunk with crackle, whoosh, sand hiss, compactor rumble, chimes,
+      wind and birdsong ambience), haptics, and the skippable finishing sequence (sand sweep with
+      broom, compactor pass with shake, camera pull-back, decorations, cat walking in, rating).
 - [ ] **6. Progression**
 - [ ] **7. Polish and verification**

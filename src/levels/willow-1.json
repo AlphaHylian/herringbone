@@ -19,7 +19,7 @@
   "decorations": [
     {
       "type": "watering-can",
-      "at": [-140, 500]
+      "at": [-260, 500]
     },
     {
       "type": "bike",
@@ -27,7 +27,7 @@
     },
     {
       "type": "cat",
-      "at": [450, 1300]
+      "at": [450, 1420]
     }
   ],
   "brick": {

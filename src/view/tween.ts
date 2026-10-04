@@ -99,11 +99,22 @@ export class Tweens {
         a.delay = 0;
       }
       a.t += step;
-      const k = a.duration <= 0 ? 1 : Math.min(1, a.t / a.duration);
-      a.update(a.ease(k));
+      let k = a.duration <= 0 ? 1 : Math.min(1, a.t / a.duration);
+      try {
+        a.update(a.ease(k));
+      } catch (e) {
+        // Usually a display object destroyed under a running tween (scene changed).
+        // End this tween rather than break every other animation.
+        console.warn('tween stopped:', e);
+        k = 1;
+      }
       if (k >= 1) {
         a.done = true;
-        a.onDone?.();
+        try {
+          a.onDone?.();
+        } catch (e) {
+          console.warn('tween onDone failed:', e);
+        }
         a.resolve();
       } else {
         list[w++] = a;
@@ -118,7 +129,11 @@ export class Tweens {
       if (a.done) continue;
       a.update(1);
       a.done = true;
-      a.onDone?.();
+      try {
+        a.onDone?.();
+      } catch {
+        /* see update() */
+      }
       a.resolve();
     }
     this.list.length = 0;

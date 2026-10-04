@@ -18,15 +18,15 @@
   "decorations": [
     {
       "type": "plant",
-      "at": [-160, 150]
+      "at": [-280, 150]
     },
     {
       "type": "watering-can",
-      "at": [760, 820]
+      "at": [830, 820]
     },
     {
       "type": "cat",
-      "at": [300, 1150]
+      "at": [300, 1300]
     }
   ],
   "tutorial": true,

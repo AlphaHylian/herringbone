@@ -3,7 +3,7 @@
  * Handles drag-and-snap, tap-to-fill, offcuts, undo, and hands off to the splitter and the
  * finishing sequence.
  */
-import { Container, Graphics, Rectangle, type FederatedPointerEvent } from 'pixi.js';
+import { Container, Graphics, Rectangle, Sprite, type FederatedPointerEvent } from 'pixi.js';
 import type { LevelData } from '../core/level';
 import { buildJob, type Job, type Slot } from '../core/job';
 import { CutSession, GameState, type Placement } from '../core/game';
@@ -62,9 +62,9 @@ export class JobScene implements Scene {
   readonly state: GameState;
   readonly view: JobView;
   readonly cam = new Container();
-  private ui = new Container();
+  readonly ui = new Container();
   readonly overlay = new Container();
-  private bar: BottomBar;
+  readonly bar: BottomBar;
   private topBg = new Graphics();
   private backBtn: Button;
   private undoBtn: Button;
@@ -160,6 +160,19 @@ export class JobScene implements Scene {
   }
   private toBar(p: Pt): Pt {
     return [p[0] - this.bar.x, p[1] - this.bar.y];
+  }
+
+  /** 1 = top and bottom bars shown, 0 = slid off screen (finishing sequence). */
+  uiReveal = 1;
+  setUiReveal(v: number): void {
+    this.uiReveal = v;
+    const l = this.layout;
+    const hide = 1 - v;
+    this.bar.y = l.height - this.bar.height_ + (this.bar.height_ + 30) * hide;
+    const up = -(l.safe.top + 90) * hide;
+    this.backBtn.y = l.safe.top + 34 + up;
+    this.undoBtn.y = l.safe.top + 34 + up;
+    this.title.y = l.safe.top + 34 + up;
   }
 
   // ---- state refresh ----------------------------------------------------------------------
@@ -664,10 +677,11 @@ export class JobScene implements Scene {
       const t = r();
       const x = a[0] + (b[0] - a[0]) * t;
       const y = a[1] + (b[1] - a[1]) * t;
-      const dot = new Graphics();
-      dot.circle(0, 0, 14).fill({ color: 0xe9dcc0, alpha: 0.7 });
+      const dot = new Sprite(tex);
+      dot.anchor.set(0.5);
+      dot.tint = 0xeadcc0;
+      dot.width = dot.height = 34;
       dot.position.set(x, y);
-      void tex;
       this.view.fx.addChild(dot);
       const dx = (r() - 0.5) * 60;
       const dy = (r() - 0.5) * 60;

@@ -10,6 +10,7 @@ import { JobScene } from './view/jobScene';
 import { attachSplitter } from './view/splitter';
 import { getLevel, LEVEL_ORDER } from './levels';
 import { resultsCard } from './view/results';
+import { runFinish } from './view/finish';
 import { THEME } from './view/theme';
 
 async function boot(): Promise<void> {
@@ -45,6 +46,7 @@ async function boot(): Promise<void> {
     haptics.setEnabled(s.haptics);
   };
   applySettings();
+  sfx.ambient(true);
 
   const sceneLayer = new Container();
   const overlay = new Container();
@@ -76,6 +78,7 @@ async function boot(): Promise<void> {
         });
         attachSplitter(scene);
         scene.finisher = async (sc) => {
+          await runFinish(sc, { cardSpace: 330 });
           const card = resultsCard(c, {
             title: 'Job done!',
             score: sc.state.score(),
@@ -84,6 +87,7 @@ async function boot(): Promise<void> {
               c.goto({ name: 'job', levelId: LEVEL_ORDER[(i + 1) % LEVEL_ORDER.length]! });
             },
           });
+          card.node.y = c.layout.height - c.layout.safe.bottom - 165;
           sc.overlay.addChild(card.node);
           await card.reveal();
         };
@@ -93,6 +97,7 @@ async function boot(): Promise<void> {
   };
   const manager = new SceneManager(ctx, sceneLayer, overlay, factory);
   debug.manager = manager;
+  debug.sfx = sfx;
   (window as unknown as { __hb: unknown }).__hb = debug;
 
   const relayout = (): void => {

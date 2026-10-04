@@ -48,9 +48,9 @@ const levels = [
     pattern: { type: 'stretcher' },
     colors: RED,
     decorations: [
-      { type: 'plant', at: [-160, 150] },
-      { type: 'watering-can', at: [760, 820] },
-      { type: 'cat', at: [300, 1150] },
+      { type: 'plant', at: [-280, 150] },
+      { type: 'watering-can', at: [830, 820] },
+      { type: 'cat', at: [300, 1300] },
     ],
     tutorial: true,
   },
@@ -63,9 +63,9 @@ const levels = [
     pattern: { type: 'herringbone90', offset: [30, 40] },
     colors: RED,
     decorations: [
-      { type: 'plant', at: [-150, 100] },
-      { type: 'bench', at: [400, 1160] },
-      { type: 'cat', at: [950, 600] },
+      { type: 'plant', at: [-280, 100] },
+      { type: 'bench', at: [400, 1270] },
+      { type: 'cat', at: [1080, 600] },
     ],
   },
   {
@@ -81,7 +81,7 @@ const levels = [
     decorations: [
       { type: 'table', at: [820, 330] },
       { type: 'plant', at: [760, 900] },
-      { type: 'cat', at: [280, 1650] },
+      { type: 'cat', at: [280, 1800] },
     ],
   },
   {
@@ -107,9 +107,9 @@ const levels = [
     pattern: { type: 'stretcher', angle: 90, offset: [50, 0] },
     colors: RED,
     decorations: [
-      { type: 'bench', at: [250, 450] },
+      { type: 'bench', at: [500, -280] },
       { type: 'birdbath', at: [900, 1100] },
-      { type: 'cat', at: [-150, 900] },
+      { type: 'cat', at: [-300, 900] },
     ],
   },
 
@@ -123,9 +123,9 @@ const levels = [
     pattern: { type: 'herringbone45', offset: [0, 25] },
     colors: CLAY,
     decorations: [
-      { type: 'watering-can', at: [-140, 500] },
+      { type: 'watering-can', at: [-260, 500] },
       { type: 'bike', at: [1050, 300] },
-      { type: 'cat', at: [450, 1300] },
+      { type: 'cat', at: [450, 1420] },
     ],
   },
   {
@@ -138,7 +138,7 @@ const levels = [
     colors: CLAY,
     decorations: [
       { type: 'firepit', at: [700, 700] },
-      { type: 'bench', at: [700, 1550] },
+      { type: 'bench', at: [700, 1680] },
       { type: 'cat', at: [1550, 300] },
     ],
   },
@@ -155,7 +155,7 @@ const levels = [
     decorations: [
       { type: 'tree', at: [250, 250] },
       { type: 'car', at: [1300, 950] },
-      { type: 'plant', at: [1750, 200] },
+      { type: 'plant', at: [1900, 250] },
     ],
   },
   {
@@ -177,8 +177,8 @@ const levels = [
     decorations: [
       { type: 'table', at: [550, 450] },
       { type: 'parasol', at: [550, 450] },
-      { type: 'plant', at: [-150, 1300] },
-      { type: 'cat', at: [1250, 900] },
+      { type: 'plant', at: [-280, 1300] },
+      { type: 'cat', at: [1380, 900] },
     ],
   },
 
@@ -192,9 +192,9 @@ const levels = [
     pattern: { type: 'basketweave', offset: [60, 30] },
     colors: SLATE,
     decorations: [
-      { type: 'bench', at: [500, -160] },
-      { type: 'plant', at: [1150, 1000] },
-      { type: 'cat', at: [-150, 600] },
+      { type: 'bench', at: [500, -290] },
+      { type: 'plant', at: [1270, 1000] },
+      { type: 'cat', at: [-300, 600] },
     ],
   },
   {
@@ -210,7 +210,7 @@ const levels = [
       { type: 'table', at: [270, 1250] },
       { type: 'parasol', at: [270, 1250] },
       { type: 'table', at: [830, 250] },
-      { type: 'cat', at: [1250, 1100] },
+      { type: 'cat', at: [1380, 1100] },
     ],
   },
   {
@@ -228,8 +228,8 @@ const levels = [
     colors: SLATE,
     decorations: [
       { type: 'birdbath', at: [650, 650] },
-      { type: 'bench', at: [650, 1450] },
-      { type: 'cat', at: [1450, 650] },
+      { type: 'bench', at: [650, 1530] },
+      { type: 'cat', at: [1530, 650] },
     ],
   },
   {
@@ -246,8 +246,8 @@ const levels = [
     decorations: [
       { type: 'tree', at: [380, 1250] },
       { type: 'lantern', at: [-140, 400] },
-      { type: 'bench', at: [-170, 900] },
-      { type: 'cat', at: [1050, 1300] },
+      { type: 'bench', at: [-300, 900], rotation: 90 },
+      { type: 'cat', at: [1250, 1300] },
     ],
   },
 ];

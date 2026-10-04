@@ -77,7 +77,10 @@ export function drawShadow(g: Graphics, polygon: Ring, skin: Skin, joint = JOINT
   const local = insetConvex(applyRing(invert(skin.m), polygon), joint);
   const [a, b, c, d, tx, ty] = skin.m;
   g.setFromMatrix(new Matrix(a, b, c, d, tx + SHADOW_OFFSET[0], ty + SHADOW_OFFSET[1]));
-  g.poly(flat(local)).fill({ color: THEME.shadow, alpha: 0.28 });
+  // Three nested layers make a soft edge without a blur filter (cheap and batchable).
+  g.poly(flat(insetConvex(local, -5))).fill({ color: THEME.shadow, alpha: 0.07 });
+  g.poly(flat(insetConvex(local, -1.5))).fill({ color: THEME.shadow, alpha: 0.1 });
+  g.poly(flat(insetConvex(local, 2))).fill({ color: THEME.shadow, alpha: 0.14 });
 }
 
 interface PieceView {

@@ -347,13 +347,13 @@ export function rectRing(w: number, h: number): Ring {
 }
 
 /**
- * Shrink a convex ring by distance d (for drawing joints). Returns the original ring if the
- * inset would collapse it.
+ * Shrink a convex ring by distance d (for drawing joints); a negative d grows it. Returns the
+ * original ring if the inset would collapse it.
  */
 export function insetConvex(r: Ring, d: number): Ring {
   const ring = ensureCCW(r);
   const n = ring.length;
-  if (n < 3 || d <= 0) return ring;
+  if (n < 3 || d === 0) return ring;
   const lines: [Pt, Pt][] = [];
   for (let i = 0; i < n; i++) {
     const a = ring[i]!;
@@ -378,6 +378,7 @@ export function insetConvex(r: Ring, d: number): Ring {
     const t = cross(sub(q1, p1), r2) / den;
     out.push([p1[0] + r1[0] * t, p1[1] + r1[1] * t]);
   }
-  if (out.length < 3 || signedArea(out) <= 0 || ringArea(out) < ringArea(ring) * 0.2) return ring;
+  if (out.length < 3 || signedArea(out) <= 0 || (d > 0 && ringArea(out) < ringArea(ring) * 0.2))
+    return ring;
   return out;
 }

@@ -21,7 +21,7 @@
   "decorations": [
     {
       "type": "bench",
-      "at": [250, 450]
+      "at": [500, -280]
     },
     {
       "type": "birdbath",
@@ -29,7 +29,7 @@
     },
     {
       "type": "cat",
-      "at": [-150, 900]
+      "at": [-300, 900]
     }
   ],
   "brick": {
