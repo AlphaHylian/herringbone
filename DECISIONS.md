@@ -16,3 +16,51 @@ Judgment calls made while building Herringbone, with the reasoning.
   Capacitor 8 projects), so no CocoaPods step is needed.
 - **Status bar.** Dark text on the light sand background (`Style.Light` / `UIStatusBarStyleDarkContent`),
   web view drawn under the status bar; the game pads its UI by the safe-area insets.
+
+## Geometry
+
+- **Clipper2 (`clipper2-ts`) instead of `polygon-clipping`.** I started with `polygon-clipping`
+  as suggested, but it threw "Unable to complete output ring" on 45° herringbone bricks and on
+  unions of many exactly-touching slots, even with coordinate snapping. Its successor
+  `polyclip-ts` failed the same way. Clipper2 works at a fixed decimal precision (0.0001 mm) and
+  handled every case; it's actively maintained and was also about twice as fast here.
+- **World units are millimetres.** Bricks are 200 × 100 mm. Joints aren't modelled
+  geometrically; the renderer insets each brick slightly to draw them.
+- **Herringbone and basketweave need length = 2 × width.** The loader enforces it.
+  Stretcher bond accepts any brick shape.
+- **45° herringbone is the 90° tiling rotated by 45°.** Levels can add their own rotation and
+  offset.
+- **Accuracy is measured against the target's convex hull**, not the raw target. Straight cuts
+  of a convex brick always give convex pieces, so a target that bends inwards (around a tree pit)
+  can never be matched exactly. The hull is the best any paver could do, so a perfect cut
+  scores 1.0. The thin gap between a straight cut and a concave curve fills with jointing sand.
+- **Concave targets are split.** At a sharp inside corner (over 22° of turn, e.g. the inside
+  corner of an L-shaped patio) a target is split into convex parts along an edge extension, each
+  its own slot. A gentle concave curve whose hull gap is more than 5% of a brick is split at its
+  deepest point. That's how a paver would use two pieces around a tight curve.
+- **Slivers.** Brick-and-border overlaps smaller than 8% of a brick get no slot. The sand bed
+  under the job shows through there and gets filled by the jointing-sand sweep.
+- **Curves need more than one cut.** The ideal cuts for a slot follow its hull edges. A run of
+  short edges (a sampled curve) is simplified with Douglas–Peucker at 3 mm to a few chords. The
+  splitter allows any number of cuts.
+- **Offcuts** are always convex, because they come from straight cuts of a convex brick. A
+  piece fits a slot if some rotation (or flip, since bricks look the same both sides) and
+  translation puts every hull corner inside it, within 4 mm, and it covers at least 95% of the
+  hull. Any excess is trimmed off. Offcuts can't be cut again in the splitter. That keeps the
+  splitter about one fresh brick per slot and keeps the tray simple.
+- **Tray.** Leftovers under 12% of a brick are swept away. The tray holds 6 pieces, and when
+  it overflows the smallest piece goes.
+
+## Rating
+
+- 1 brick for finishing. 2 bricks if at least 60% of edge pieces fit cleanly (accuracy at least
+  0.9), or 40% clean plus good material use. 3 bricks if at least 85% are clean and the player
+  saved at least half as many bricks as the greedy solver does by reusing offcuts.
+
+## Content
+
+- **Neighborhoods and patterns.** There are four patterns and three neighborhoods. Maple Row
+  teaches stretcher bond and 90° herringbone, since the game is named after herringbone and it
+  should arrive early. Willow Lane unlocks 45° herringbone and Harbour Hill unlocks basketweave.
+- Levels are authored in `scripts/build-levels.mjs` (`pnpm levels`), which samples arcs at
+  about 70 mm chords and writes the JSON files in `src/levels/`.

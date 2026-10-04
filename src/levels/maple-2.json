@@ -1,0 +1,37 @@
+{
+  "id": "maple-2",
+  "name": "Back Step",
+  "neighborhood": "maple",
+  "clientNote": "Herringbone by the back door, like my gran had.",
+  "border": {
+    "outer": [
+      [0, 0],
+      [800, 0],
+      [800, 1000],
+      [0, 1000]
+    ]
+  },
+  "pattern": {
+    "type": "herringbone90",
+    "offset": [30, 40]
+  },
+  "colors": ["#a8513a", "#b65e43", "#9a4632", "#bc6a4a"],
+  "decorations": [
+    {
+      "type": "plant",
+      "at": [-150, 100]
+    },
+    {
+      "type": "bench",
+      "at": [400, 1160]
+    },
+    {
+      "type": "cat",
+      "at": [950, 600]
+    }
+  ],
+  "brick": {
+    "length": 200,
+    "width": 100
+  }
+}

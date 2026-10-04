@@ -1,0 +1,37 @@
+{
+  "id": "willow-1",
+  "name": "Shed Apron",
+  "neighborhood": "willow",
+  "clientNote": "In front of the shed. I hear diagonal herringbone is very smart.",
+  "border": {
+    "outer": [
+      [0, 0],
+      [900, 0],
+      [900, 1150],
+      [0, 1150]
+    ]
+  },
+  "pattern": {
+    "type": "herringbone45",
+    "offset": [0, 25]
+  },
+  "colors": ["#c48852", "#b47645", "#cf9861", "#a96a3f"],
+  "decorations": [
+    {
+      "type": "watering-can",
+      "at": [-140, 500]
+    },
+    {
+      "type": "bike",
+      "at": [1050, 300]
+    },
+    {
+      "type": "cat",
+      "at": [450, 1300]
+    }
+  ],
+  "brick": {
+    "length": 200,
+    "width": 100
+  }
+}

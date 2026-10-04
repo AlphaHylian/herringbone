@@ -1,0 +1,22 @@
+{
+  "neighborhoods": [
+    {
+      "id": "maple",
+      "name": "Maple Row",
+      "pattern": "herringbone90",
+      "levels": ["maple-1", "maple-2", "maple-3", "maple-4", "maple-5"]
+    },
+    {
+      "id": "willow",
+      "name": "Willow Lane",
+      "pattern": "herringbone45",
+      "levels": ["willow-1", "willow-2", "willow-3", "willow-4"]
+    },
+    {
+      "id": "harbour",
+      "name": "Harbour Hill",
+      "pattern": "basketweave",
+      "levels": ["harbour-1", "harbour-2", "harbour-3", "harbour-4"]
+    }
+  ]
+}

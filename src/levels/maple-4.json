@@ -1,0 +1,37 @@
+{
+  "id": "maple-4",
+  "name": "Pointed Path",
+  "neighborhood": "maple",
+  "clientNote": "The path meets the lawn at an angle. Can you follow the line?",
+  "border": {
+    "outer": [
+      [0, 0],
+      [650, 0],
+      [650, 1200],
+      [0, 1850]
+    ]
+  },
+  "pattern": {
+    "type": "herringbone90",
+    "offset": [55, 20]
+  },
+  "colors": ["#a8513a", "#b65e43", "#9a4632", "#bc6a4a"],
+  "decorations": [
+    {
+      "type": "lantern",
+      "at": [-140, 300]
+    },
+    {
+      "type": "plant",
+      "at": [800, 1400]
+    },
+    {
+      "type": "bike",
+      "at": [820, 400]
+    }
+  ],
+  "brick": {
+    "length": 200,
+    "width": 100
+  }
+}

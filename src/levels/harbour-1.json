@@ -1,0 +1,37 @@
+{
+  "id": "harbour-1",
+  "name": "Courtyard",
+  "neighborhood": "harbour",
+  "clientNote": "A neat square courtyard. Basketweave, like the old harbour walk.",
+  "border": {
+    "outer": [
+      [0, 0],
+      [1000, 0],
+      [1000, 1100],
+      [0, 1100]
+    ]
+  },
+  "pattern": {
+    "type": "basketweave",
+    "offset": [60, 30]
+  },
+  "colors": ["#8e8781", "#9c938a", "#7f7873", "#a79d92"],
+  "decorations": [
+    {
+      "type": "bench",
+      "at": [500, -160]
+    },
+    {
+      "type": "plant",
+      "at": [1150, 1000]
+    },
+    {
+      "type": "cat",
+      "at": [-150, 600]
+    }
+  ],
+  "brick": {
+    "length": 200,
+    "width": 100
+  }
+}

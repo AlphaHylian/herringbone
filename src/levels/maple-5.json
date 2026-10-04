@@ -1,0 +1,39 @@
+{
+  "id": "maple-5",
+  "name": "Corner Nook",
+  "neighborhood": "maple",
+  "clientNote": "A quiet spot for a chair, tucked into the fence corner.",
+  "border": {
+    "outer": [
+      [0, 0],
+      [1000, 0],
+      [1000, 600],
+      [450, 1350],
+      [0, 1350]
+    ]
+  },
+  "pattern": {
+    "type": "stretcher",
+    "angle": 90,
+    "offset": [50, 0]
+  },
+  "colors": ["#a8513a", "#b65e43", "#9a4632", "#bc6a4a"],
+  "decorations": [
+    {
+      "type": "bench",
+      "at": [250, 450]
+    },
+    {
+      "type": "birdbath",
+      "at": [900, 1100]
+    },
+    {
+      "type": "cat",
+      "at": [-150, 900]
+    }
+  ],
+  "brick": {
+    "length": 200,
+    "width": 100
+  }
+}

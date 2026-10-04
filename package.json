@@ -15,7 +15,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test",
-    "icons": "node scripts/generate-icons.mjs"
+    "icons": "node scripts/generate-icons.mjs",
+    "levels": "node scripts/build-levels.mjs && prettier --write src/levels"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.2",
@@ -23,8 +24,8 @@
     "@capacitor/preferences": "^8.0.1",
     "@capacitor/splash-screen": "^8.0.2",
     "@capacitor/status-bar": "^8.0.4",
-    "pixi.js": "^8.22.0",
-    "polygon-clipping": "^0.15.7"
+    "clipper2-ts": "2.0.1-18",
+    "pixi.js": "^8.22.0"
   },
   "devDependencies": {
     "@capacitor/android": "^8.5.2",
