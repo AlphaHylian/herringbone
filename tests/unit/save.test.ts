@@ -16,6 +16,7 @@ describe('save data', () => {
       offcutsReused: 1,
       completedAt: 5,
       edges: { '3': [0, 0, 1, 0, 1, 1] },
+      variants: '01a',
     });
     s.settings.volume = 0.3;
     const back = parseSave(serializeSave(s));
@@ -49,6 +50,7 @@ describe('save data', () => {
       offcutsReused: 0,
       completedAt: 1,
       edges: {},
+      variants: '',
     });
     s = recordCompletion(s, 'x', {
       rating: 1,
@@ -56,6 +58,7 @@ describe('save data', () => {
       offcutsReused: 0,
       completedAt: 2,
       edges: {},
+      variants: '',
     });
     expect(s.completed.x?.rating).toBe(3);
   });

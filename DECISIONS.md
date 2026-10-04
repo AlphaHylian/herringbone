@@ -83,3 +83,22 @@ Judgment calls made while building Herringbone, with the reasoning.
 - **Headless performance numbers are not meaningful.** The sandbox's Chromium renders WebGL
   with SwiftShader on the CPU, where even an empty stage manages about 40 fps. Performance is
   judged by draw-call and allocation discipline instead (see milestone 7).
+
+## Progression
+
+- **Unlocks are linear.** A job opens when the one before it is finished, so a neighborhood
+  opens when the previous one is done. With no fail states, nobody can get stuck.
+- **Patterns:** stretcher bond and 90° herringbone from the start (Maple Row), 45° herringbone
+  with Willow Lane, basketweave with Harbour Hill. Free Build offers only unlocked patterns,
+  so unlocking still means something, but every shape is open from the start.
+- **Ratings keep the best result** when a job is replayed. "Pave again" is offered from the
+  results card and from the review screen.
+- **Save record** per job: rating, bricks, offcuts reused, timestamp, the brick variant per slot,
+  and each edge piece's polygon and texture transform. That's enough to redraw the player's
+  exact patio in thumbnails and review. The save format is versioned (`version: 1`), parsing
+  never throws, and saves from a newer build are ignored rather than guessed at.
+- **Client notes** appear before each job (tap to start). The tutorial runs once, on the first
+  job, until the first cut piece is laid. Debug deep links (`?level=id`) skip both unless
+  `&note=1` or `&tutorial=1` is given.
+- **Thumbnails** are rendered one per frame so the map opens instantly, and cached by level and
+  completion time.

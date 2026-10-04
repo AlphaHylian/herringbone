@@ -123,6 +123,11 @@ export class GameState {
     return p;
   }
 
+  /** Put back a piece from a saved game (no history, no brick count). */
+  restore(slotId: number, polygon: Ring, accuracy: number, kind: PlacementKind): Placement {
+    return this.put(this.slot(slotId), kind, polygon, accuracy);
+  }
+
   /** Check whether a tray piece fits an edge slot. */
   offcutFit(offcutId: number, slotId: number): OffcutFit | null {
     const s = this.slot(slotId);

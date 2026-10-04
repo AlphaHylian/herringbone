@@ -43,11 +43,7 @@
   "decorations": [
     {
       "type": "table",
-      "at": [550, 450]
-    },
-    {
-      "type": "parasol",
-      "at": [550, 450]
+      "at": [550, 380]
     },
     {
       "type": "plant",

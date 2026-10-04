@@ -175,8 +175,7 @@ const levels = [
     pattern: { type: 'herringbone45', offset: [40, 0] },
     colors: CLAY,
     decorations: [
-      { type: 'table', at: [550, 450] },
-      { type: 'parasol', at: [550, 450] },
+      { type: 'table', at: [550, 380] },
       { type: 'plant', at: [-280, 1300] },
       { type: 'cat', at: [1380, 900] },
     ],

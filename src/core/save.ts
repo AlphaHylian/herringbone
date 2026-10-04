@@ -16,8 +16,13 @@ export interface JobRecord {
   bricksUsed: number;
   offcutsReused: number;
   completedAt: number;
-  /** Laid edge pieces, slotId -> flat [x0,y0,x1,y1,...] rounded to 0.1 mm. */
+  /**
+   * Laid edge pieces: slotId -> [variant, a, b, c, d, tx, ty, x0, y0, x1, y1, ...]: the brick
+   * variant, the texture transform (skin), then the laid polygon in world mm.
+   */
   edges: Record<string, number[]>;
+  /** Brick variant per slot, one base-36 character each ('' if not recorded). */
+  variants: string;
 }
 
 export interface SaveData {
@@ -87,6 +92,7 @@ export function migrate(raw: unknown): SaveData {
       offcutsReused: num(c.offcutsReused, 0, 0, 1e6),
       completedAt: num(c.completedAt, 0, 0, Number.MAX_SAFE_INTEGER),
       edges,
+      variants: typeof c.variants === 'string' && /^[0-9a-z]*$/.test(c.variants) ? c.variants : '',
     };
   }
   return out;

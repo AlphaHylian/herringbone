@@ -315,3 +315,77 @@ export function ratingBrick(g: Graphics, x: number, y: number, w: number, filled
     });
   }
 }
+
+/** A horizontal slider (0..1). */
+export class Slider extends Container {
+  private track = new Graphics();
+  private knob = new Graphics();
+  private dragging = false;
+  constructor(
+    private w: number,
+    public value: number,
+    private onChange: (v: number) => void,
+  ) {
+    super();
+    this.addChild(this.track, this.knob);
+    this.knob.circle(0, 0, 15).fill({ color: THEME.shadow, alpha: 0.15 });
+    this.knob.circle(0, -1, 14).fill(THEME.paper);
+    this.knob.circle(0, -1, 14).stroke({ width: 2, color: THEME.accent });
+    this.eventMode = 'static';
+    this.cursor = 'pointer';
+    this.hitArea = {
+      contains: (x: number, y: number) => x > -20 && x < w + 20 && y > -24 && y < 24,
+    };
+    const set = (gx: number): void => {
+      const x = this.toLocal({ x: gx, y: 0 }).x;
+      this.value = Math.max(0, Math.min(1, x / this.w));
+      this.draw();
+      this.onChange(this.value);
+    };
+    this.on('pointerdown', (e) => {
+      e.stopPropagation();
+      this.dragging = true;
+      set(e.global.x);
+    });
+    this.on('globalpointermove', (e) => this.dragging && set(e.global.x));
+    this.on('pointerup', () => (this.dragging = false));
+    this.on('pointerupoutside', () => (this.dragging = false));
+    this.draw();
+  }
+  private draw(): void {
+    this.track.clear();
+    this.track.roundRect(0, -4, this.w, 8, 4).fill(THEME.paperShade);
+    this.track.roundRect(0, -4, Math.max(8, this.w * this.value), 8, 4).fill(THEME.accent);
+    this.knob.x = this.w * this.value;
+  }
+}
+
+/** An on/off switch. */
+export class Toggle extends Container {
+  private g = new Graphics();
+  constructor(
+    public on_: boolean,
+    private onChange: (v: boolean) => void,
+  ) {
+    super();
+    this.addChild(this.g);
+    this.eventMode = 'static';
+    this.cursor = 'pointer';
+    this.hitArea = { contains: (x: number, y: number) => x > -10 && x < 66 && y > -22 && y < 22 };
+    this.on('pointertap', (e) => {
+      e.stopPropagation();
+      this.on_ = !this.on_;
+      this.draw();
+      this.onChange(this.on_);
+    });
+    this.on('pointerdown', (e) => e.stopPropagation());
+    this.draw();
+  }
+  private draw(): void {
+    const g = this.g;
+    g.clear();
+    g.roundRect(0, -15, 56, 30, 15).fill(this.on_ ? THEME.leaf : THEME.paperShade);
+    g.circle(this.on_ ? 41 : 15, 1, 12).fill({ color: THEME.shadow, alpha: 0.15 });
+    g.circle(this.on_ ? 41 : 15, 0, 12).fill(0xffffff);
+  }
+}

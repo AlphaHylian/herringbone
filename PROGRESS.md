@@ -25,5 +25,12 @@
       sound (clack, pickup, blade thunk with crackle, whoosh, sand hiss, compactor rumble, chimes,
       wind and birdsong ambience), haptics, and the skippable finishing sequence (sand sweep with
       broom, compactor pass with shake, camera pull-back, decorations, cat walking in, rating).
-- [ ] **6. Progression**
+- [x] **6. Progression**: 13 jobs in 3 neighborhoods (Maple Row, Willow Lane, Harbour Hill),
+      neighborhood map with thumbnails rendered from the real levels (finished jobs show the
+      player's own bricks), sequential unlocks, one new pattern per neighborhood, versioned
+      saves through the Preferences interface, review of finished jobs with "Pave again",
+      client notes, wordless ghost-hand tutorial (drag, then edge, then swipe), Free Build
+      (8 shapes, unlocked patterns, 3 brick colours, no rating) and settings (volume, sound,
+      haptics, reduce motion, reset progress). e2e tests cover the whole loop, and every level
+      is solved in the real scene.
 - [ ] **7. Polish and verification**

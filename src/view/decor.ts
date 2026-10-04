@@ -191,7 +191,7 @@ function parasol(): DecorNode {
   const node = new Container();
   const sh = new Graphics();
   const g = new Graphics();
-  const r = 640;
+  const r = 430;
   const pts: number[] = [];
   for (let i = 0; i < 8; i++) {
     const a = (i * Math.PI) / 4 + Math.PI / 8;
@@ -206,7 +206,9 @@ function parasol(): DecorNode {
       i % 2 ? 0xf2ede2 : 0xc9573d,
     );
   }
-  g.circle(0, 0, 36).fill(0x8a6a48);
+  g.circle(0, 0, 30).fill(0x8a6a48);
+  // Slightly translucent so the paving underneath still reads.
+  g.alpha = 0.88;
   node.addChild(sh, g);
   return { node };
 }

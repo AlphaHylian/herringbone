@@ -9,7 +9,7 @@ import type { Slot } from '../core/job';
 import { apply, applyRing, invert, type Affine } from '../core/affine';
 import { ringArea, ringCentroid, rectRing, type Pt, type Ring } from '../core/geom';
 import { OFFCUT_MIN_FRACTION } from '../core/offcut';
-import { CLEAN_ACCURACY } from '../core/cut';
+import { CLEAN_ACCURACY, idealCuts } from '../core/cut';
 import { drawPiece, drawShadow, flat, slotSkin, clipSegmentConvex, type Skin } from './jobView';
 import type { JobScene } from './jobScene';
 import { Button, text } from './ui';
@@ -435,10 +435,29 @@ export class Splitter {
 
   private close(): void {
     this.scene.splitterUndo = null;
+    this.scene.activeSplitter = null;
     delete this.scene.ctx.debug.splitter;
     if (this.scene.mode === 'splitter') this.scene.mode = 'play';
     this.root.destroy({ children: true });
     this.scene.refresh();
+  }
+
+  /** The ideal cut lines in screen coordinates (tutorial hand, tests). */
+  idealLinesScreen(): [Pt, Pt][] {
+    return idealCuts(this.slot, this.scene.job.brickWidth).map(([a, b]) => {
+      const la = apply(this.local, a);
+      const lb = apply(this.local, b);
+      const pa = this.bench.toGlobal({ x: la[0], y: la[1] });
+      const pb = this.bench.toGlobal({ x: lb[0], y: lb[1] });
+      return [
+        [pa.x, pa.y],
+        [pb.x, pb.y],
+      ];
+    });
+  }
+
+  get isBusy(): boolean {
+    return this.busy;
   }
 
   private debugApi(): Record<string, unknown> {
@@ -452,20 +471,7 @@ export class Splitter {
         return [p.x, p.y];
       },
       /** The ideal cuts in screen coordinates. */
-      idealScreen: () =>
-        this.scene.ctx.debug.job &&
-        (this.scene.ctx.debug.job as { idealCutsScreen: (id: number) => [Pt, Pt][] })
-          .idealCutsScreen(this.slot.id)
-          .map(([a, b]) => {
-            const la = apply(this.local, this.scene.toWorld(a));
-            const lb = apply(this.local, this.scene.toWorld(b));
-            const pa = this.bench.toGlobal({ x: la[0], y: la[1] });
-            const pb = this.bench.toGlobal({ x: lb[0], y: lb[1] });
-            return [
-              [pa.x, pa.y],
-              [pb.x, pb.y],
-            ];
-          }),
+      idealScreen: () => this.idealLinesScreen(),
       lay: () => this.lay(),
       undoScreen: () => [this.undoBtn.x, this.undoBtn.y],
     };
@@ -476,6 +482,7 @@ export class Splitter {
 export function attachSplitter(scene: JobScene): void {
   scene.splitterOpener = (slot, variant, from) => {
     const s = new Splitter(scene, slot, variant, from);
+    scene.activeSplitter = s;
     scene.overlay.addChild(s.root);
   };
 }

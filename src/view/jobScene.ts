@@ -5,6 +5,9 @@
  */
 import { Container, Graphics, Rectangle, Sprite, type FederatedPointerEvent } from 'pixi.js';
 import type { LevelData } from '../core/level';
+import type { JobRecord } from '../core/save';
+import { restorePieces } from './persist';
+import { addDecorations, finalCamera } from './finish';
 import { buildJob, type Job, type Slot } from '../core/job';
 import { CutSession, GameState, type Placement } from '../core/game';
 import { affine, compose, translation, type Affine } from '../core/affine';
@@ -26,6 +29,8 @@ import type { Text } from 'pixi.js';
 export interface JobSceneOptions {
   /** Free Build: no rating, no saving. */
   free?: boolean;
+  /** Show this finished job instead of playing it. */
+  review?: JobRecord | null;
   /** Called when the job is finished and the player continues. */
   onExit: () => void;
   /** Called when complete with the final state (for saving). */
@@ -105,7 +110,7 @@ export class JobScene implements Scene {
     this.title = text(level.name, { fontSize: 19, fontWeight: '700' });
     this.title.anchor.set(0.5);
     this.ui.addChild(this.topBg, this.backBtn, this.undoBtn, this.title, this.bar);
-    this.root.addChild(this.cam, this.ui, this.overlay);
+    this.root.addChild(this.cam, this.ui, this.overlay, this.top);
     this.root.eventMode = 'static';
     this.root.on('pointerdown', (e) => this.onDown(e));
     this.root.on('globalpointermove', (e) => this.onMove(e));
@@ -113,7 +118,28 @@ export class JobScene implements Scene {
     this.root.on('pointerupoutside', (e) => this.onUp(e));
     this.refresh();
     this.exposeDebug();
+    if (opts.review !== undefined) this.showFinished(opts.review);
   }
+
+  /** Lay every piece at once and show the finished job (revisiting it from the map). */
+  private showFinished(rec: JobRecord | null): void {
+    for (const p of restorePieces(this.job, rec)) {
+      const slot = this.job.slots[p.slotId]!;
+      const placement = this.state.restore(
+        p.slotId,
+        p.polygon,
+        p.accuracy,
+        slot.kind === 'full' ? 'brick' : 'cut',
+      );
+      this.skins.set(p.slotId, p.skin);
+      this.view.addPiece(placement, p.skin);
+    }
+    this.view.jointSand.alpha = 1;
+    addDecorations(this);
+    this.mode = 'done';
+    this.reviewing = true;
+  }
+  reviewing = false;
 
   // ---- layout and camera ----------------------------------------------------------------
 
@@ -131,6 +157,13 @@ export class JobScene implements Scene {
     this.playBottom = l.height - barH;
     this.fitCamera();
     this.refresh();
+    if (this.reviewing) {
+      const cam = finalCamera(this, 120);
+      this.cam.scale.set(cam.s);
+      this.cam.position.set(cam.x, cam.y);
+      this.setUiReveal(0);
+      this.backBtn.y = l.safe.top + 34;
+    }
   }
 
   /** Fit the job into the play area. */
@@ -740,6 +773,11 @@ export class JobScene implements Scene {
 
   /** Set by the splitter while open. */
   splitterUndo: (() => void) | null = null;
+  activeSplitter: import('./splitter').Splitter | null = null;
+  /** Per-frame hooks (tutorial). */
+  tickers: ((dt: number) => void)[] = [];
+  /** Topmost layer, above the splitter (tutorial hand). */
+  readonly top = new Container();
 
   private async complete(): Promise<void> {
     this.mode = 'finish';
@@ -756,11 +794,18 @@ export class JobScene implements Scene {
 
   update(dt: number): void {
     this.time += dt;
+    for (const t of this.tickers) t(dt);
   }
 
   destroy(): void {
     delete this.ctx.debug.job;
     this.root.destroy({ children: true });
+  }
+
+  /** Screen position of the top pallet brick. */
+  debugPallet(): Pt {
+    const t = this.bar.palletTop();
+    return [t.at[0] + this.bar.x, t.at[1] + this.bar.y];
   }
 
   // ---- test hooks -----------------------------------------------------------------------------
