@@ -33,4 +33,68 @@
       (8 shapes, unlocked patterns, 3 brick colours, no rating) and settings (volume, sound,
       haptics, reduce motion, reset progress). e2e tests cover the whole loop, and every level
       is solved in the real scene.
-- [ ] **7. Polish and verification**
+- [x] **7. Polish and verification**: draw-call audit (8 per frame for an open job, about 30–40
+      with every brick, shadow and decoration, 26 on the map after baking rounded corners into
+      thumbnails), per-frame allocation review, safe-area insets checked with a simulated notch
+      and on 320×568 and 430×932 screens, reduce-motion mode (short tweens, no shake, dust or
+      cat walk), procedural icon and splash (`pnpm icons`) wired in through `@capacitor/assets`,
+      `npx cap sync` verified, final README and screenshots.
+
+## Native builds
+
+iOS and Android builds could **not** be compiled in this environment: no macOS/Xcode, and no
+Android SDK. What was verified:
+
+- `npx cap sync` succeeds for both platforms.
+- App id `com.alphahylian.herringbone` and display name "Herringbone" on both.
+- Portrait lock: `UISupportedInterfaceOrientations` (iPhone and iPad, with
+  `UIRequiresFullScreen`) and `android:screenOrientation="portrait"`.
+- Status bar: dark text over the web view (`UIStatusBarStyleDarkContent`, StatusBar plugin
+  `Style.Light`, overlaying), with the UI padded by safe-area insets.
+- Generated icons (including Android adaptive layers) and light/dark splash screens are in
+  both projects.
+
+## Summary
+
+**Done.** All seven milestones. The game is complete and playable in the browser and packaged
+for iOS and Android: 13 jobs in 3 neighborhoods, 4 patterns, drag-and-snap, tap-to-fill, the
+splitter with multi-cut and undo, offcut reuse with rotation and flipping, a gentle rating, the
+finishing sequence with sand, compactor and decorations, the map with real thumbnails, saves,
+tutorial, Free Build and settings. All art and sound is procedural. 152 unit tests and 10
+Playwright tests (one of them the screenshot generator, skipped by default) pass. A solver
+proves every level can be finished.
+
+**Rough edges.**
+
+- Headless Chromium here renders WebGL on the CPU (SwiftShader), so real frame rates on phones
+  are unmeasured. Draw calls and allocations were audited instead and are low, but
+  please check on a mid-range Android phone.
+- On very small screens (iPhone SE) large jobs make bricks around 22 px. Snapping is generous,
+  but there's no pinch-zoom.
+- Sounds are synthesized and were checked only for running without errors. Their mix and
+  levels deserve a listen on a real device with headphones.
+- Offcuts can't be cut again, only fitted (see DECISIONS.md).
+- Curves are straight chords: the thin gap between a straight cut and a tight concave curve
+  is filled with jointing sand, as a paver would do.
+- The tutorial and map text is short English text. The flow itself works without reading.
+
+**Known bugs.** None open. Fixed along the way: polygon-clipping crashes (switched to Clipper2),
+undo restoring offcuts discarded by the same action, a hang when skipping the finishing
+sequence, and the splitter ignoring "Lay it" mid-animation.
+
+### Getting it onto your phones (on your Mac)
+
+```sh
+git clone https://github.com/AlphaHylian/herringbone.git && cd herringbone
+git checkout claude/herringbone-game      # until the PR is merged
+corepack enable && pnpm install           # or: npm i -g pnpm && pnpm install
+pnpm build && npx cap sync
+
+# iPhone (needs Xcode 16+): set your signing Team on the App target, pick the phone, press Run.
+npx cap open ios
+
+# Android (needs Android Studio): let Gradle sync, enable USB debugging, press Run.
+npx cap open android
+# or a debug APK from the command line:
+cd android && ./gradlew assembleDebug && adb install -r app/build/outputs/apk/debug/app-debug.apk
+```

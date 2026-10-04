@@ -15,8 +15,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test",
-    "icons": "node scripts/generate-icons.mjs",
-    "levels": "node scripts/build-levels.mjs && prettier --write src/levels"
+    "icons": "node scripts/generate-icons.mjs && capacitor-assets generate --ios --android --iconBackgroundColor '#e8d9bf' --iconBackgroundColorDark '#2e261f' --splashBackgroundColor '#e8d9bf' --splashBackgroundColorDark '#2e261f'",
+    "levels": "node scripts/build-levels.mjs && prettier --write src/levels",
+    "cap:sync": "pnpm build && cap sync"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.2",
@@ -38,6 +39,7 @@
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.13.0",
     "prettier": "^3.9.9",
+    "sharp": "^0.35.5",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.71.0",
     "vite": "^8.3.2",

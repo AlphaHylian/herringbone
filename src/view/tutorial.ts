@@ -46,6 +46,8 @@ export class Tutorial {
   private ghost = new Container();
   private t = 0;
   private edgeSlot: Slot | null = null;
+  private linesFor: unknown = null;
+  private lines: [Pt, Pt][] = [];
 
   constructor(
     private scene: JobScene,
@@ -94,7 +96,11 @@ export class Tutorial {
         this.ring.clear();
         return;
       }
-      const lines = sp.idealLinesScreen();
+      if (this.linesFor !== sp) {
+        this.linesFor = sp;
+        this.lines = sp.idealLinesScreen();
+      }
+      const lines = this.lines;
       if (!lines.length) return;
       const [a, b] = lines[0]!;
       const d: Pt = [b[0] - a[0], b[1] - a[1]];

@@ -1,5 +1,12 @@
 /** The neighborhood map: a scrollable street of jobs with thumbnails of finished work. */
-import { Container, Graphics, Rectangle, Sprite, type FederatedPointerEvent } from 'pixi.js';
+import {
+  Container,
+  Graphics,
+  Rectangle,
+  Sprite,
+  Texture,
+  type FederatedPointerEvent,
+} from 'pixi.js';
 import type { Ctx, Scene } from './ctx';
 import type { Layout } from './layout';
 import { NEIGHBORHOODS, LEVEL_ORDER, getLevel } from '../levels';
@@ -7,7 +14,6 @@ import { isUnlocked, neighborhoodUnlocked, nextJob, totalBricks } from '../core/
 import { PATTERN_NAMES } from '../core/patterns';
 import { Button, drawIcon, ratingBrick, text } from './ui';
 import { THEME } from './theme';
-import { grassTexture } from './textures';
 import { renderThumb, cachedThumb } from './thumbs';
 import { drawSwatch } from './swatch';
 import { openSettings } from './settings';
@@ -83,7 +89,8 @@ export class MapScene implements Scene {
     const ctx = this.ctx;
     const save = ctx.save.data;
     for (const c of this.content.removeChildren()) c.destroy({ children: true });
-    for (const c of this.fixed.removeChildren()) c.destroy({ children: true });
+    for (const c of this.fixed.removeChildren())
+      if (c !== this.topFade) c.destroy({ children: true });
     this.tiles = [];
     this.pending = [];
     // Background: soft sand with a band of grass texture fading in.
@@ -198,17 +205,20 @@ export class MapScene implements Scene {
         .fill({ color: THEME.bg, alpha: Math.min(1, (i / 12) * 1.6) });
     // Top fade so content slides softly under the status bar and the gear.
     const th = l.safe.top + 64;
+    const topFade = this.topFade;
+    topFade.clear();
     for (let i = 0; i < 10; i++)
-      fade
+      topFade
         .rect(0, (i * th) / 10, l.width, th / 10 + 1)
         .fill({ color: THEME.bg, alpha: Math.min(1, 1 - i / 10) * 0.95 });
+    topFade.eventMode = 'none';
     fade.eventMode = 'none';
     const free = new Button(
       { icon: 'build', label: 'Free Build', width: 190, height: 54, fill: THEME.paper },
       () => ctx.goto({ name: 'freebuild' }),
     );
     free.position.set(l.width / 2, l.height - l.safe.bottom - 44);
-    this.fixed.addChild(fade, gear, free);
+    this.fixed.addChild(fade, topFade, gear, free);
 
     // Scroll position
     if (this.focus) this.scrollToTile(this.focus, false);
@@ -227,12 +237,10 @@ export class MapScene implements Scene {
     g.roundRect(-T / 2, -T / 2, T, T, 22).fill(rec ? THEME.paper : 0xf0e6d4);
     node.addChild(g);
     const inner = T - 12;
-    const thumb = new Sprite(cachedThumb(level, rec) ?? grassTexture());
+    const thumb = new Sprite(cachedThumb(level, rec) ?? Texture.EMPTY);
     thumb.width = thumb.height = inner;
     thumb.anchor.set(0.5);
-    const tmask = new Graphics().roundRect(-inner / 2, -inner / 2, inner, inner, 17).fill(0xffffff);
-    thumb.mask = tmask;
-    node.addChild(thumb, tmask);
+    node.addChild(thumb);
     if (!unlocked) {
       const veil = new Graphics()
         .roundRect(-inner / 2, -inner / 2, inner, inner, 17)
@@ -290,7 +298,9 @@ export class MapScene implements Scene {
 
   private applyScroll(): void {
     this.content.y = this.scrollY;
+    this.topFade.alpha = Math.max(0, Math.min(1, -this.scrollY / 60));
   }
+  private topFade = new Graphics();
 
   private settings(): void {
     this.modal = true;

@@ -847,13 +847,17 @@ export class JobScene implements Scene {
         ]),
       /** Finish the job with the solver, through the same placement paths the UI uses. */
       solve: () => this.solveAll(),
+      /** Lay only the first n solver steps (screenshots). */
+      solveSome: (n: number) => this.solveAll(n),
     };
   }
 
   /** Fill everything with the solver (used by tests and the debug menu). */
-  solveAll(): void {
+  solveAll(limit = Infinity): void {
     const plan = solveJob(this.job);
+    let done = 0;
     for (const step of plan.steps) {
+      if (done++ >= limit) break;
       if (this.state.isFilled(step.slotId)) continue;
       const s = this.job.slots[step.slotId]!;
       if (step.type === 'full') {

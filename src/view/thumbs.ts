@@ -1,5 +1,5 @@
 /** Map thumbnails rendered from the real level: finished jobs show the player's bricks. */
-import { Container, Rectangle, type Renderer, type Texture } from 'pixi.js';
+import { Container, Graphics, Rectangle, type Renderer, type Texture } from 'pixi.js';
 import type { LevelData } from '../core/level';
 import type { JobRecord } from '../core/save';
 import { buildJob } from '../core/job';
@@ -50,6 +50,10 @@ export function renderThumb(
   const s = px / size;
   const holder = new Container();
   holder.addChild(view);
+  // Bake rounded corners into the texture so the map needs no per-tile masks (keeps batching).
+  const round = new Graphics().roundRect(0, 0, px, px, px * 0.15).fill(0xffffff);
+  holder.addChild(round);
+  view.mask = round;
   view.scale.set(s);
   view.position.set(
     -(bb.minX - margin - (size - w) / 2) * s,

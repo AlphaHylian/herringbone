@@ -102,3 +102,20 @@ Judgment calls made while building Herringbone, with the reasoning.
   `&note=1` or `&tutorial=1` is given.
 - **Thumbnails** are rendered one per frame so the map opens instantly, and cached by level and
   completion time.
+
+## Polish
+
+- **App icon** is a 45° herringbone tile rendered from an SVG built in `scripts/generate-icons.mjs`
+  (with `sharp`). The Android adaptive foreground is a single pale brick "lifted" off the
+  pattern. Splash screens are a small herringbone medallion on sand, with a dark variant.
+  `@capacitor/assets` generates every platform size. Its PWA output is skipped (`--ios --android`).
+- **Performance budget** is judged by draw calls per frame (counted by wrapping WebGL draw
+  calls in Playwright): 8 for an open job, about 30–40 with every brick and decoration, and 26
+  on the map. Map thumbnails have their rounded corners baked into the render texture, because
+  per-tile stencil masks had pushed the map to 78 draw calls.
+- **Curved Path, not Curved Drive.** At true scale a car swamped the 75 cm-wide strip, so the
+  level became a garden path with a lantern and a watering can. The `car` decoration remains
+  available for future, larger driveways.
+- **Reduce motion** shortens every tween to 15%, and turns off camera shake, dust puffs, the
+  pulsing next-job tile, decoration idle animations and the cat's walk. The finishing sequence
+  then takes about 1 s.

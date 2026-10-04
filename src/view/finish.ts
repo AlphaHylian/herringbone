@@ -97,6 +97,15 @@ export function addDecorations(scene: JobScene): DecorNode[] {
     scene.view.decor.addChild(n.node);
     out.push(n);
   }
+  // Animate the living ones (cat, fire, tree, lantern, birdbath).
+  let t = 0;
+  const ticking = out.filter((n) => n.tick);
+  if (ticking.length && !scene.ctx.reduceMotion) {
+    scene.tickers.push((dt) => {
+      t += dt;
+      for (const n of ticking) if (!n.node.destroyed) n.tick!(t, dt);
+    });
+  }
   return out;
 }
 

@@ -144,17 +144,18 @@ const levels = [
   },
   {
     id: 'willow-3',
-    name: 'Curved Drive',
+    name: 'Curved Path',
     neighborhood: 'willow',
-    clientNote: 'The drive sweeps round the old oak. Follow the curve, please.',
+    clientNote: 'The path sweeps round the old oak. Follow the curve, please.',
     border: {
       outer: [...arc(0, 0, 1650, 0, Math.PI / 2), ...arc(0, 0, 900, Math.PI / 2, 0)],
     },
     pattern: { type: 'herringbone45', offset: [15, 30] },
     colors: CLAY,
     decorations: [
-      { type: 'tree', at: [250, 250] },
-      { type: 'car', at: [1300, 950] },
+      { type: 'tree', at: [60, 60] },
+      { type: 'lantern', at: [1820, 900] },
+      { type: 'watering-can', at: [600, 1900] },
       { type: 'plant', at: [1900, 250] },
     ],
   },

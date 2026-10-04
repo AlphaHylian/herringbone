@@ -86,3 +86,29 @@ test('free build: pave freely with no rating', async ({ page }) => {
   });
   expect(await hb(page, 'h => Object.keys(h.save.data.completed).length')).toBe(0);
 });
+
+test('reduce motion: the finishing sequence plays through quickly without a skip', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.evaluate(() =>
+    localStorage.setItem(
+      'herringbone:save',
+      JSON.stringify({
+        version: 1,
+        completed: {},
+        tutorialDone: true,
+        settings: { volume: 0.5, muted: true, haptics: false, reduceMotion: true },
+      }),
+    ),
+  );
+  await page.goto('/?level=maple-1');
+  await page.waitForFunction(() => (window as any).__hb?.job);
+  const t0 = Date.now();
+  await hb(page, 'h => h.job.solve()');
+  await page.waitForFunction(() => (window as any).__hb.job.mode() === 'done', null, {
+    timeout: 30000,
+  });
+  expect(Date.now() - t0).toBeLessThan(15000);
+  expect(await hb(page, 'h => !!h.finishSkipped')).toBe(false);
+});

@@ -1,8 +1,8 @@
 {
   "id": "willow-3",
-  "name": "Curved Drive",
+  "name": "Curved Path",
   "neighborhood": "willow",
-  "clientNote": "The drive sweeps round the old oak. Follow the curve, please.",
+  "clientNote": "The path sweeps round the old oak. Follow the curve, please.",
   "border": {
     "outer": [
       [1650, 0],
@@ -76,11 +76,15 @@
   "decorations": [
     {
       "type": "tree",
-      "at": [250, 250]
+      "at": [60, 60]
     },
     {
-      "type": "car",
-      "at": [1300, 950]
+      "type": "lantern",
+      "at": [1820, 900]
+    },
+    {
+      "type": "watering-can",
+      "at": [600, 1900]
     },
     {
       "type": "plant",
