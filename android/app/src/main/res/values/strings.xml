@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Herringbone</string>
+    <string name="title_activity_main">Herringbone</string>
+    <string name="package_name">com.alphahylian.herringbone</string>
+    <string name="custom_url_scheme">com.alphahylian.herringbone</string>
+</resources>

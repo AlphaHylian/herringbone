@@ -1,0 +1,7 @@
+dist
+ios
+android
+pnpm-lock.yaml
+docs/screenshots
+resources
+coverage
