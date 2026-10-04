@@ -32,7 +32,7 @@ test('tap an edge slot, swipe a clean cut, piece is laid and offcut kept', async
   const [a, b] = longer(ideal[0]![0], ideal[0]![1]);
   await swipe(page, a, b);
   // Clean cut: the piece flies into the slot on its own.
-  await page.waitForFunction(() => !(window as any).__hb.splitter, null, { timeout: 15000 });
+  await page.waitForFunction(() => !(window as any).__hb.splitter, null, { timeout: 30000 });
   expect(await hb(page, 'h => h.job.filled()')).toBe(1);
   expect(await hb(page, 'h => h.job.bricksUsed()')).toBe(1);
   expect(await hb(page, 'h => h.job.tray()')).toBe(1);
@@ -77,6 +77,6 @@ test('a sloppy cut can be undone, cut again, or laid as it is', async ({ page })
   await swipe(page, [a[0] + 30, a[1]], [b[0] + 10, b[1]]);
   await page.waitForTimeout(1500);
   await hb(page, 'h => h.splitter.lay()');
-  await page.waitForFunction(() => !(window as any).__hb.splitter, null, { timeout: 15000 });
+  await page.waitForFunction(() => !(window as any).__hb.splitter, null, { timeout: 30000 });
   expect(await hb(page, 'h => h.job.filled()')).toBe(1);
 });

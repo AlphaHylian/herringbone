@@ -59,8 +59,14 @@ test('drag, tap, undo, then finish a job', async ({ page }) => {
   await job(page, 'solve');
   await page.waitForTimeout(300);
   expect(await job<boolean>(page, 'complete')).toBe(true);
+  // The finishing sequence is skippable with a tap.
+  await page.waitForTimeout(1200);
+  const t0 = Date.now();
+  await page.mouse.click(195, 300);
   await page.waitForFunction(() => (window as any).__hb.job.mode() === 'done', null, {
-    timeout: 20000,
+    timeout: 60000,
   });
+  expect(Date.now() - t0).toBeLessThan(15000);
+  expect(await page.evaluate(() => (window as any).__hb.finishSkipped)).toBe(true);
   await page.screenshot({ path: 'test-results/job-done.png' });
 });
