@@ -10,7 +10,10 @@
       ops, cutting and accuracy, offcut fitting, scoring, game state with undo, greedy solver,
       versioned saves, level loader and validator, 13 levels. All levels are proven
       completable by the solver in unit tests.
-- [ ] **3. Playable single job**
+- [x] **3. Playable single job**: PixiJS job view (grass, sand bed, kerb, chalk guides,
+      textured bricks from one procedural atlas, shadows), pallet and offcut tray, drag-and-snap
+      with magnetic pull, tap-to-fill, unlimited undo, completion and results card. Playwright
+      test drives real pointer input, then finishes the job via the solver hook.
 - [ ] **4. Cutting and offcuts**
 - [ ] **5. Feel pass**
 - [ ] **6. Progression**

@@ -18,6 +18,7 @@ export default defineConfig({
     ...devices['iPhone 13'],
     browserName: 'chromium',
     viewport: { width: 390, height: 844 },
+    deviceScaleFactor: 1,
     launchOptions: executablePath ? { executablePath } : {},
   },
   webServer: {

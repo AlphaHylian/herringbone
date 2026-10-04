@@ -28,6 +28,11 @@ export default tseslint.config(
     },
   },
   {
+    // End-to-end tests reach into the page's untyped debug hooks.
+    files: ['e2e/**/*.ts'],
+    rules: { '@typescript-eslint/no-explicit-any': 'off' },
+  },
+  {
     // The core must stay pure: no rendering, no DOM.
     files: ['src/core/**/*.ts'],
     languageOptions: { globals: { ...globals.es2021 } },

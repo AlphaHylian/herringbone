@@ -84,3 +84,27 @@ describe('geom', () => {
     expect(() => intersect([r], [rectRing(1000, 1000)])).not.toThrow();
   });
 });
+
+import { insetConvex } from '../../src/core/geom';
+import { affine, apply, compose, invert } from '../../src/core/affine';
+
+describe('insetConvex and affine', () => {
+  it('insets a square evenly', () => {
+    const r = insetConvex(sq, 1);
+    expect(ringArea(r)).toBeCloseTo(64);
+  });
+  it('falls back when the inset would collapse', () => {
+    expect(insetConvex(sq, 6)).toHaveLength(4);
+    expect(ringArea(insetConvex(sq, 6))).toBe(100);
+  });
+  it('composes and inverts affines', () => {
+    const a = affine(0.7, 10, -3, true);
+    const b = affine(-1.2, 4, 5);
+    const p: [number, number] = [3, 9];
+    const q = apply(compose(a, b), p);
+    const back = apply(invert(compose(a, b)), q);
+    expect(back[0]).toBeCloseTo(3);
+    expect(back[1]).toBeCloseTo(9);
+    expect(apply(a, apply(b, p))[0]).toBeCloseTo(q[0]);
+  });
+});

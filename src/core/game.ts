@@ -49,7 +49,8 @@ export class GameState {
 
   constructor(
     readonly job: Job,
-    readonly solverBricks = job.slots.length,
+    /** Bricks the greedy solver needs; set before scoring (see solverBricks()). */
+    public solverBricks = job.slots.length,
   ) {
     this.placements = new Array<Placement | undefined>(job.slots.length).fill(undefined);
   }

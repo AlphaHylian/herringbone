@@ -24,13 +24,15 @@ export interface Offcut {
   /** Convex ring in local coordinates, centred on its centroid. */
   shape: Ring;
   area: number;
+  /** World position of the centroid when it was cut (maps `shape` back to where it came from). */
+  origin: Pt;
 }
 
 export function makeOffcut(id: number, worldRing: Ring): Offcut {
   const r = ensureCCW(worldRing);
   const c = ringCentroid(r);
   const shape = translateRing(r, [-c[0], -c[1]]);
-  return { id, shape, area: ringArea(shape) };
+  return { id, shape, area: ringArea(shape), origin: c };
 }
 
 export interface OffcutFit {

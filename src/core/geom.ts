@@ -345,3 +345,39 @@ export function rectRing(w: number, h: number): Ring {
     [-x, y],
   ];
 }
+
+/**
+ * Shrink a convex ring by distance d (for drawing joints). Returns the original ring if the
+ * inset would collapse it.
+ */
+export function insetConvex(r: Ring, d: number): Ring {
+  const ring = ensureCCW(r);
+  const n = ring.length;
+  if (n < 3 || d <= 0) return ring;
+  const lines: [Pt, Pt][] = [];
+  for (let i = 0; i < n; i++) {
+    const a = ring[i]!;
+    const b = ring[(i + 1) % n]!;
+    const e = sub(b, a);
+    const l = len(e);
+    if (l < 1e-9) continue;
+    const nrm: Pt = [(-e[1] / l) * d, (e[0] / l) * d]; // inward for CCW
+    lines.push([add(a, nrm), add(b, nrm)]);
+  }
+  const out: Ring = [];
+  for (let i = 0; i < lines.length; i++) {
+    const [p1, p2] = lines[(i - 1 + lines.length) % lines.length]!;
+    const [q1, q2] = lines[i]!;
+    const r1 = sub(p2, p1);
+    const r2 = sub(q2, q1);
+    const den = cross(r1, r2);
+    if (Math.abs(den) < 1e-12) {
+      out.push(q1);
+      continue;
+    }
+    const t = cross(sub(q1, p1), r2) / den;
+    out.push([p1[0] + r1[0] * t, p1[1] + r1[1] * t]);
+  }
+  if (out.length < 3 || signedArea(out) <= 0 || ringArea(out) < ringArea(ring) * 0.2) return ring;
+  return out;
+}
