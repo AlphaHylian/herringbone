@@ -17,7 +17,7 @@ const CSS = `
 .hud .stats { position: absolute; left: max(14px, env(safe-area-inset-left)); top: max(12px, env(safe-area-inset-top)); background: var(--shade); padding: 7px 12px; border-radius: 12px; font-size: 13px; letter-spacing: .01em; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .hud .stats b { font-weight: 650; }
 .hud .buttons { position: absolute; right: max(12px, env(safe-area-inset-right)); top: max(10px, env(safe-area-inset-top)); display: flex; gap: 8px; pointer-events: auto; }
-.hud .btn { pointer-events: auto; border: 0; background: var(--shade); color: var(--ink); height: 40px; min-width: 40px; padding: 0 12px; border-radius: 12px; font-size: 14px; font-weight: 600; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); cursor: pointer; }
+.hud .btn { touch-action: manipulation; pointer-events: auto; border: 0; background: var(--shade); color: var(--ink); height: 40px; min-width: 40px; padding: 0 12px; border-radius: 12px; font-size: 14px; font-weight: 600; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); cursor: pointer; }
 .hud .btn:active { transform: scale(.96); }
 .hud .hint { position: absolute; left: 50%; bottom: calc(86px + env(safe-area-inset-bottom)); transform: translateX(-50%); max-width: min(92vw, 560px); text-align: center; font-size: 15px; line-height: 1.35; padding: 8px 14px; border-radius: 14px; background: var(--shade); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: opacity .25s; }
 .hud .hint:empty { display: none; }
@@ -34,7 +34,7 @@ const CSS = `
 .panel h2 { margin: 0 0 14px; font-size: 20px; }
 .panel p { margin: 0 0 14px; line-height: 1.45; color: #5a4d40; font-size: 15px; }
 .panel ul { margin: 0 0 18px; padding-left: 18px; color: #5a4d40; font-size: 14px; line-height: 1.55; }
-.panel .go { width: 100%; height: 50px; border: 0; border-radius: 14px; background: #2f2a25; color: #fff4e6; font-size: 17px; font-weight: 650; cursor: pointer; margin-top: 4px; }
+.panel .go { touch-action: manipulation; width: 100%; height: 50px; border: 0; border-radius: 14px; background: #2f2a25; color: #fff4e6; font-size: 17px; font-weight: 650; cursor: pointer; margin-top: 4px; }
 .panel .go.secondary { background: transparent; color: #8a3b12; border: 1.5px solid #d7c6b0; }
 .panel .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 14px; font-size: 15px; }
 .panel .row input[type=range] { width: 55%; accent-color: #e0662a; }
@@ -79,7 +79,38 @@ export class Hud {
     this.standBtn = button('Stand', 'btn');
     this.menuBtn = button('☰', 'btn');
     this.menuBtn.setAttribute('aria-label', 'Menu');
-    buttons.append(this.standBtn, this.menuBtn);
+    buttons.append(this.standBtn);
+    // Fullscreen hides Safari's toolbars on iPad (iPhone Safari doesn't support it).
+    const doc = document as Document & {
+      webkitFullscreenEnabled?: boolean;
+      webkitFullscreenElement?: Element | null;
+      webkitExitFullscreen?: () => void;
+    };
+    if (doc.fullscreenEnabled || doc.webkitFullscreenEnabled) {
+      const fs = button('⛶', 'btn');
+      fs.setAttribute('aria-label', 'Full screen');
+      fs.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const root = document.documentElement as HTMLElement & {
+          webkitRequestFullscreen?: () => void;
+        };
+        const inFs = doc.fullscreenElement ?? doc.webkitFullscreenElement;
+        try {
+          if (inFs) {
+            if (doc.exitFullscreen) void doc.exitFullscreen().catch(() => {});
+            else doc.webkitExitFullscreen?.();
+          } else if (root.requestFullscreen) {
+            void root.requestFullscreen().catch(() => {});
+          } else {
+            root.webkitRequestFullscreen?.();
+          }
+        } catch {
+          // Not allowed here; the game works the same without it.
+        }
+      });
+      buttons.append(fs);
+    }
+    buttons.append(this.menuBtn);
     this.root.append(this.cross, this.stats, this.hintEl, this.carry, buttons);
     document.body.appendChild(this.root);
 

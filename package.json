@@ -11,6 +11,7 @@
     "dev:3d": "vite --config vite.paver.config.ts",
     "build:3d": "tsc --noEmit && vite build --config vite.paver.config.ts",
     "preview:3d": "vite preview --config vite.paver.config.ts",
+    "build:pages": "pnpm build && pnpm build:3d && rm -rf site && cp -r dist-paver site && cp -r dist site/2d && touch site/.nojekyll",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",

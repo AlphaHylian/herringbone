@@ -108,7 +108,8 @@ export class Input {
         return;
       }
     }
-    const left = e.pointerType === 'touch' && e.clientX < window.innerWidth * 0.42;
+    // Fingers and Apple Pencil both get the joystick on the left.
+    const left = e.pointerType !== 'mouse' && e.clientX < window.innerWidth * 0.42;
     if (left && this.stickId === null) {
       this.stickId = e.pointerId;
       this.stickOrigin = { x: e.clientX, y: e.clientY };

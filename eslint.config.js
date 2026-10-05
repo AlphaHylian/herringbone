@@ -8,6 +8,7 @@ export default tseslint.config(
     ignores: [
       'dist',
       'dist-paver',
+      'site',
       'ios',
       'android',
       'node_modules',

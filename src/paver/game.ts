@@ -233,6 +233,9 @@ export class Game {
     this.bindUi();
 
     window.addEventListener('resize', () => this.resize());
+    // iPad and iPhone: rotation and Safari's collapsing toolbars change the visible size.
+    window.addEventListener('orientationchange', () => setTimeout(() => this.resize(), 250));
+    window.visualViewport?.addEventListener('resize', () => this.resize());
     this.resize();
     this.world.streamAll(this.s);
     this.updateCamera(0);

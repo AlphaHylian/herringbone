@@ -25,5 +25,5 @@ jobs:
       - run: pnpm build:3d
       - name: Playwright smoke tests
         run: |
-          pnpm exec playwright install --with-deps chromium
+          pnpm exec playwright install --with-deps chromium webkit
           pnpm e2e

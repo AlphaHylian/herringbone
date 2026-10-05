@@ -1,6 +1,11 @@
 import { Game } from './game';
 
 const app = document.getElementById('app')!;
+
+// Safari's pinch and double-tap zoom would fight the look and lay gestures.
+for (const ev of ['gesturestart', 'gesturechange', 'gestureend'])
+  document.addEventListener(ev, (e) => e.preventDefault(), { passive: false });
+document.addEventListener('dblclick', (e) => e.preventDefault(), { passive: false });
 const loading = document.getElementById('loading');
 
 // Let the loading screen paint before the (synchronous) texture and world generation.
