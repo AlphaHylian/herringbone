@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./web-DbQ8a-06.js","./index-BipbPKcz.js","./CanvasPool-B8O-vB4S.js","./canvasUtils-YwZCF1kQ.js","./RenderTargetSystem-xAPD8LEq.js","./getTextureBatchBindGroup-BjC63UGi.js","./getTexelRangeRects-BvLnu2JE.js"])))=>i.map(i=>d[i]);
+import{i as e,n as t}from"./index-BipbPKcz.js";var n=t(`Preferences`,{web:()=>e(()=>import(`./web-DbQ8a-06.js`).then(e=>new e.PreferencesWeb),__vite__mapDeps([0,1,2,3,4,5,6]),import.meta.url)});export{n as Preferences};
