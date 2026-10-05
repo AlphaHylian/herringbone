@@ -1,4 +1,5 @@
 dist
+dist-paver
 ios
 android
 pnpm-lock.yaml

@@ -40,6 +40,17 @@
       cat walk), procedural icon and splash (`pnpm icons`) wired in through `@capacitor/assets`,
       `npx cap sync` verified, final README and screenshots.
 
+## Herringbone 3D
+
+Done: an endless winding path streamed in chunks, procedural textures, sky and sun shadows, trees
+and grass, packs of blocks, gloved first-person hands, laying (tap or sweep), marking edge gaps,
+the block splitter with lever and blade animation and offcuts left on the ground, saving,
+desktop and touch controls, and synthesised sound. Tests: unit tests for the path and chunks,
+and an e2e test of the full loop plus a phone-sized smoke test.
+
+Known limits: the 3D game isn't packaged in the Capacitor apps (it runs in the browser). Blocks
+laid by mistake can't be lifted again.
+
 ## Native builds
 
 iOS and Android builds could **not** be compiled in this environment: no macOS/Xcode, and no

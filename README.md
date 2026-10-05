@@ -38,6 +38,31 @@ rating rewards clean cuts and frugal use of material.
 - No image or audio files. Every texture (bricks, sand, grass), decoration, icon and sound is
   generated in code.
 
+## Herringbone 3D: first-person freeplay
+
+A separate first-person 3D game shares the paving maths. You kneel on an endless, gently winding
+garden path and lay charcoal blocks in 45° herringbone with orange-gloved hands. Pick up blocks
+from the packs beside the path, tap the sand bed to lay them (hold and sweep to keep laying),
+mark the gaps at the kerb, cut those blocks on a wheeled block splitter, and lay the cut pieces.
+There's no end and no score, just a count of blocks laid and square metres paved. The path
+streams in 4 m chunks, and progress saves in the browser.
+
+```sh
+pnpm dev:3d         # http://localhost:5174
+pnpm build:3d       # static bundle in dist-paver/
+```
+
+Desktop: WASD to walk, mouse to look (pointer lock when allowed, drag otherwise), click to act,
+C to kneel or stand. Phones: left thumb walks, right thumb drags to look, tap to act, press and
+hold then drag to sweep. Add `?quality=low|high` to override graphics, or `?shadows=0` to turn
+shadows off.
+
+It's built with Three.js: procedural canvas textures and normal maps, a physical sky with image-based
+light, sun shadows that follow the player, instanced blocks with chamfered geometry up close and
+boxes further away, and Web Audio sounds. The code is in `src/paver/`. `path.ts` and `slots.ts`
+are pure and unit-tested in `tests/unit/paver.test.ts`, and `e2e/paver.spec.ts` plays the full
+pick-up, lay, mark, cut and lay loop.
+
 ## Run it in a browser
 
 Requirements: Node 22+ and pnpm 10+.
