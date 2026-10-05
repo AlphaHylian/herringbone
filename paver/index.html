@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#e8d9bf" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Herringbone" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <title>Herringbone 3D</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #e8d9bf;
+        overscroll-behavior: none;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: none;
+        /* No long-press callouts, text selection or magnifier on iPad and iPhone. */
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      #app {
+        position: fixed;
+        inset: 0;
+      }
+      .loading {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e8d9bf;
+        color: #5a4d40;
+        font:
+          600 16px ui-rounded,
+          system-ui,
+          sans-serif;
+        z-index: 20;
+        transition: opacity 0.4s;
+      }
+      #app canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="loading" class="loading">Setting out the site…</div>
+    <script type="module" src="../src/paver/main.ts"></script>
+  </body>
+</html>

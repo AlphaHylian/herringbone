@@ -119,3 +119,24 @@ Judgment calls made while building Herringbone, with the reasoning.
 - **Reduce motion** shortens every tween to 15%, and turns off camera shake, dust puffs, the
   pulsing next-job tile, decoration idle animations and the cat's walk. The finishing sequence
   then takes about 1 s.
+
+## Herringbone 3D (first-person freeplay)
+
+- **A separate page and bundle** (`paver/`, `vite.paver.config.ts`, `dist-paver/`) so the 2D app that
+  Capacitor packages is untouched. It reuses `src/core/geom.ts` (Clipper2) and the herringbone
+  tiling from `src/core/patterns.ts`.
+- **One global pattern on a winding path.** The heading is a sum of slow sines, capped at about
+  70° off the start direction, so the path always moves forward and never crosses itself. The
+  tightest bend has a radius of about 16 m. As the path bends, the kerbs cut the fixed 45°
+  herringbone at constantly changing angles, which keeps the edge cuts varied.
+- **Chunk ownership by nearest centreline point** gives each block to exactly one 4 m chunk.
+  Blocks well inside the edges skip the polygon clip, so a chunk builds in about 18 ms.
+- **Cuts are exact, cutting is automatic.** Marking a gap and using the splitter are physical
+  steps, but the piece always fits. A freeplay game about laying shouldn't fail on a wobbly
+  cut. Pieces under 4% of a block are left for jointing sand.
+- **Performance.** Pack blocks are 12-triangle boxes, laid blocks are 60-triangle chamfered
+  extrusions within 14 m and boxes beyond that, and laid paving doesn't cast shadows. A
+  typical view is about 250k triangles in roughly 150 draw calls. Phones default to "low": a
+  1024 shadow map, 256 px textures and fewer grass tufts.
+- **Hands are drawn in a second pass** after clearing depth, so they never clip into packs or the
+  ground.

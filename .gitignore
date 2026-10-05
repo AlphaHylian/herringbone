@@ -1,5 +1,7 @@
 node_modules
 dist
+dist-paver
+site
 coverage
 test-results
 playwright-report
